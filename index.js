@@ -35,6 +35,8 @@ app.get('/error', (req, res) => {
     res.status(500).send("Error logged to AIOps pipeline.");
 });
 
-app.listen(3000, () => {
-    console.log("🚀 Server running on port 3000");
+const port = process.env.PORT || 8080; 
+
+app.listen(port, "0.0.0.0", () => {
+    console.log(`Server is running and listening on port ${port}`);
 });
