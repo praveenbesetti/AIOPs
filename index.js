@@ -8,19 +8,11 @@ const app = express();
 // This part ensures everything printed to the console also goes to app.log
 const logFile = fs.createWriteStream(path.join(process.cwd(), 'app.log'), { flags: 'a' });
 
-const logToFile = (message) => {
-    const timestamp = new Date().toISOString();
-    const formattedMessage = `[${timestamp}] ${message}\n`;
-    logFile.write(formattedMessage);
-    process.stdout.write(formattedMessage); // Still show it in the terminal
-};
-
-// Override console.log and console.warn
-console.log = (msg) => logToFile(`INFO: ${msg}`);
-console.warn = (msg) => logToFile(`WARN: ${msg}`);
-console.error = (msg) => logToFile(`ERROR: ${msg}`);
-// ---------------------------
-
+app.get('/test-ip', async (req, res) => {
+  const response = await fetch('https://api.ipify.org?format=json');
+  const data = await response.json();
+  res.send({ your_vpc_static_ip: data.ip });
+});
 process.on('warning', (warning) => {
     console.warn("🤖 AIOps Warning Detector: " + warning.message);
 });
